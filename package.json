@@ -1,0 +1,43 @@
+{
+  "name": "grunt-connect-pushstate",
+  "description": "A grunt plugin that provides connect middleware to rewrite requests allowing for push-state routing",
+  "version": "0.1.0",
+  "homepage": "https://github.com/brentertz/grunt-connect-pushstate",
+  "author": {
+    "name": "Brent Ertz",
+    "email": "brent.ertz@gmail.com",
+    "url": "http://brentertz.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/brentertz/grunt-connect-pushstate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brentertz/grunt-connect-pushstate/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/brentertz/grunt-connect-pushstate/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  },
+  "keywords": [
+    "gruntplugin", "connect", "middleware", "rewrite", "pushstate", "routing"
+  ]
+}
