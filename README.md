@@ -52,3 +52,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 - 0.1.0 Initial release
 - 0.1.1 Update readme example to show connect.static middleware usage
+- 0.1.2 Add empty tasks directory to avoid warnings if included via matchdep

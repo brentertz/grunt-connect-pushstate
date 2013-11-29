@@ -1,7 +1,7 @@
 {
   "name": "grunt-connect-pushstate",
   "description": "A grunt plugin that provides connect middleware to rewrite requests allowing for pushstate routing",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/brentertz/grunt-connect-pushstate",
   "author": {
     "name": "Brent Ertz",
