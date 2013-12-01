@@ -9,32 +9,37 @@
 'use strict';
 
 module.exports = function(grunt) {
-  // Project configuration.
+  // Project configuration
   grunt.initConfig({
     jshint: {
       all: [
         'Gruntfile.js',
         'tasks/*.js',
-        '<%= nodeunit.tests %>',
+        'lib/*.js',
+        '<%= mochaTest.test.src %>'
       ],
       options: {
         jshintrc: '.jshintrc',
       },
     },
 
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js'],
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/**/*_test.js']
+      }
     }
   });
 
-  // These plugins provide necessary tasks.
+  // These plugins provide necessary tasks
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
-  // Run the tests 
-  grunt.registerTask('test', ['nodeunit']);
+  // Run the tests
+  grunt.registerTask('test', ['mochaTest']);
 
-  // By default, lint and run all tests.
+  // By default, lint and run all tests
   grunt.registerTask('default', ['jshint', 'test']);
 };

@@ -1,81 +1,62 @@
-'use strict';
+var should = require('chai').should();
+var request = require('request');
+var connect = require('connect');
+var pushState = require('../lib/utils').pushState;
+var www = __dirname + '/fixtures/www';
 
-var grunt = require('grunt');
+describe('pushState', function() {
+  var app = connect().use(pushState()).use(connect.static(www));
 
-/*
-  ======== A Handy Little Nodeunit Reference ========
-  https://github.com/caolan/nodeunit
+  it('calls the next middleware', function(done) {
+    var server = app.listen(3000).on('listening', function() {
+      request('http://0.0.0.0:3000', function(error, response, body) {
+        response.statusCode.should.equal(200);
+        response.headers['content-type'].should.contain('text/html');
+        response.body.should.contain('www/index.html');
+        server.close(done);
+      });
+    });
+  });
 
-  Test methods:
-    test.expect(numAssertions)
-    test.done()
-  Test assertions:
-    test.ok(value, [message])
-    test.equal(actual, expected, [message])
-    test.notEqual(actual, expected, [message])
-    test.deepEqual(actual, expected, [message])
-    test.notDeepEqual(actual, expected, [message])
-    test.strictEqual(actual, expected, [message])
-    test.notStrictEqual(actual, expected, [message])
-    test.throws(block, [error], [message])
-    test.doesNotThrow(block, [error], [message])
-    test.ifError(value)
-*/
+  it('rewrites the request url to point at the root when the request does not include a file extension', function(done) {
+    var server = app.listen(3000).on('listening', function() {
+      request('http://0.0.0.0:3000/pathname', function(error, response, body) {
+        response.statusCode.should.equal(200);
+        body.should.contain('www/index.html');
+        server.close(done);
+      });
+    });
+  });
 
-var utils = require('../lib/utils.js');
+  it('rewrites the request url to point at the root regardless of whether the querystring contains a file extension', function(done) {
+    var server = app.listen(3000).on('listening', function() {
+      request('http://0.0.0.0:3000/pathname/?q=foo.bar', function(error, response, body) {
+        response.statusCode.should.equal(200);
+        body.should.contain('www/index.html');
+        server.close(done);
+      });
+    });
+  });
 
-exports.pushState = {
-  "calls the next middleware": function(test) {
-    var req = { url: '/' };
-    var res = {};
-    var next = function() {
-      test.done();
-    };
+  it('does not rewrite the request url when the request includes a file extension', function(done) {
+    var server = app.listen(3000).on('listening', function() {
+      request('http://0.0.0.0:3000/images/image.png', function(error, response, body) {
+        response.statusCode.should.equal(200);
+        response.headers['content-type'].should.contain('image/png');
+        server.close(done);
+      });
+    });
+  });
 
-    utils.pushState(req, res, next);
-  },
+  it('rewrites the request url to point at a custom root if defined', function(done) {
+    var app = connect().use(pushState('/other/')).use(connect.static(www));
 
-  "rewrites the request url to point at the site root when the request does not include a file extension": function(test) {
-    var originalUrl = '/pathname';
-    var req = { url: originalUrl };
-    var res = {};
-    var next = function() {
-      test.done();
-    };    
-
-    utils.pushState(req, res, next);
-
-    test.expect(2);
-    test.notStrictEqual(req.url, originalUrl, 'requested url should be altered');
-    test.strictEqual(req.url, '/', 'requested url should be site root');
-  },
-
-  "rewrites the request url to point at the site root regardless of whether the querystring contains a file extension": function(test) {
-    var originalUrl = '/pathname?q=foo.bar';
-    var req = { url: originalUrl };
-    var res = {};
-    var next = function() {
-      test.done();
-    };
-
-    utils.pushState(req, res, next);
-
-    test.expect(2);
-    test.notStrictEqual(req.url, originalUrl, 'requested url should be altered');
-    test.strictEqual(req.url, '/', 'requested url should be site root');
-  },
-
-  "does not rewrite the request url when the request includes a file extension": function(test) {
-    var originalUrl = '/favicon.ico';
-    var req = { url: originalUrl };
-    var res = {};
-    var next = function() {
-      test.done();
-    };
-
-    utils.pushState(req, res, next);
-    
-    test.expect(1);
-    test.strictEqual(req.url, originalUrl, 'request url should not be altered');
-  }
-};
+    var server = app.listen(3000).on('listening', function() {
+      request('http://0.0.0.0:3000/other/pathname', function(error, response, body) {
+        response.statusCode.should.equal(200);
+        body.should.contain('www/other/index.html');
+        server.close(done);
+      });
+    });
+  });
+});
