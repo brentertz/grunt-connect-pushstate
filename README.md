@@ -1,10 +1,12 @@
+# _This package has been deprecated, please use [connect-pushstate](https://github.com/brentertz/connect-pushstate) instead._
+
 # grunt-connect-pushstate
 
-> A grunt plugin that provides connect middleware to rewrite select requests to the site root (or a custom defined root), thus allowing for pushstate routing.
->
-> Requests including a file extension are left untouched so site assets like your images, stylesheets, and JavaScripts will load unaffected, while requests without a file extension, presumably pages or actions within your site, are rewritten to point at the root, with the original URL intact, thus allowing your pushstate router to handle the request.
-> 
-> This plugin is designed for use with the [grunt-contrib-connect](https://github.com/gruntjs/grunt-contrib-connect) plugin.
+ A grunt plugin that provides connect middleware to rewrite select requests to the site root (or a custom defined root), thus allowing for pushstate routing.
+
+Requests including a file extension are left untouched so site assets like your images, stylesheets, and JavaScripts will load unaffected, while requests without a file extension, presumably pages or actions within your site, are rewritten to point at the root, with the original URL intact, thus allowing your pushstate router to handle the request.
+
+This plugin is designed for use with the [grunt-contrib-connect](https://github.com/gruntjs/grunt-contrib-connect) plugin.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
